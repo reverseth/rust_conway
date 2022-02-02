@@ -1,7 +1,20 @@
+use serde::{Deserialize, Serialize};
 use std::{thread, time};
 
 const COLUMNS_SIZE: usize = 50;
 const LINES_SIZE: usize = 50;
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Point {
+    x: usize,
+    y: usize,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Spaceship {
+    name: String,
+    points: Vec<Point>,
+}
 
 struct World {
     matrice: Vec<Vec<bool>>,
@@ -97,75 +110,25 @@ impl World {
         }
         self.matrice = new_matrice.matrice;
     }
+
+    fn build_something(self: &mut Self, spaceship: &Spaceship) -> () {
+        for point in spaceship.points.iter() {
+            self.set_cel_value(point.x, point.y);
+        }
+    }
 }
 
 fn main() {
     let mut world: World = World::new();
 
-    // println!("{:#?}", w.matrice);
-
-    {
-        // glider
-        world.set_cel_value(25, 13);
-        world.set_cel_value(26, 14);
-        world.set_cel_value(24, 15);
-        world.set_cel_value(25, 15);
-        world.set_cel_value(26, 15);
-    }
-
-    {
-        // pulsar
-        world.set_cel_value(28, 22);
-        world.set_cel_value(29, 22);
-        world.set_cel_value(30, 22);
-        world.set_cel_value(34, 22);
-        world.set_cel_value(35, 22);
-        world.set_cel_value(36, 22);
-        world.set_cel_value(26, 24);
-        world.set_cel_value(31, 24);
-        world.set_cel_value(33, 24);
-        world.set_cel_value(38, 24);
-        world.set_cel_value(26, 25);
-        world.set_cel_value(31, 25);
-        world.set_cel_value(33, 25);
-        world.set_cel_value(38, 25);
-        world.set_cel_value(26, 26);
-        world.set_cel_value(31, 26);
-        world.set_cel_value(33, 26);
-        world.set_cel_value(38, 26);
-        world.set_cel_value(28, 27);
-        world.set_cel_value(29, 27);
-        world.set_cel_value(30, 27);
-        world.set_cel_value(34, 27);
-        world.set_cel_value(35, 27);
-        world.set_cel_value(36, 27);
-        world.set_cel_value(28, 29);
-        world.set_cel_value(29, 29);
-        world.set_cel_value(30, 29);
-        world.set_cel_value(34, 29);
-        world.set_cel_value(35, 29);
-        world.set_cel_value(36, 29);
-        world.set_cel_value(26, 30);
-        world.set_cel_value(31, 30);
-        world.set_cel_value(33, 30);
-        world.set_cel_value(38, 30);
-        world.set_cel_value(26, 31);
-        world.set_cel_value(31, 31);
-        world.set_cel_value(33, 31);
-        world.set_cel_value(38, 31);
-        world.set_cel_value(26, 32);
-        world.set_cel_value(31, 32);
-        world.set_cel_value(33, 32);
-        world.set_cel_value(38, 32);
-        world.set_cel_value(28, 34);
-        world.set_cel_value(29, 34);
-        world.set_cel_value(30, 34);
-        world.set_cel_value(34, 34);
-        world.set_cel_value(35, 34);
-        world.set_cel_value(36, 34);
-    }
-
     let mut generation: u32 = 1;
+    let spaceships_json: Vec<Spaceship> =
+        serde_json::from_str(&spaceship_serializator().unwrap()[..]).unwrap();
+
+    for spaceship in spaceships_json.iter() {
+        world.build_something(spaceship);
+    }
+
     loop {
         world.goto_next_gen();
 
@@ -176,4 +139,73 @@ fn main() {
         generation += 1;
         thread::sleep(time::Duration::from_millis(200));
     }
+}
+
+fn spaceship_serializator() -> Result<String, serde_json::Error> {
+    let glider: Spaceship = Spaceship {
+        name: String::from("Glider"),
+        points: vec![
+            Point { x: 25, y: 13 },
+            Point { x: 26, y: 14 },
+            Point { x: 24, y: 15 },
+            Point { x: 25, y: 15 },
+            Point { x: 26, y: 15 },
+        ],
+    };
+
+    let pulsar: Spaceship = Spaceship {
+        name: String::from("Pulsar"),
+        points: vec![
+            Point { x: 28, y: 22 },
+            Point { x: 29, y: 22 },
+            Point { x: 30, y: 22 },
+            Point { x: 34, y: 22 },
+            Point { x: 35, y: 22 },
+            Point { x: 36, y: 22 },
+            Point { x: 26, y: 24 },
+            Point { x: 31, y: 24 },
+            Point { x: 33, y: 24 },
+            Point { x: 38, y: 24 },
+            Point { x: 26, y: 25 },
+            Point { x: 31, y: 25 },
+            Point { x: 33, y: 25 },
+            Point { x: 38, y: 25 },
+            Point { x: 26, y: 26 },
+            Point { x: 31, y: 26 },
+            Point { x: 33, y: 26 },
+            Point { x: 38, y: 26 },
+            Point { x: 28, y: 27 },
+            Point { x: 29, y: 27 },
+            Point { x: 30, y: 27 },
+            Point { x: 34, y: 27 },
+            Point { x: 35, y: 27 },
+            Point { x: 36, y: 27 },
+            Point { x: 28, y: 29 },
+            Point { x: 29, y: 29 },
+            Point { x: 30, y: 29 },
+            Point { x: 34, y: 29 },
+            Point { x: 35, y: 29 },
+            Point { x: 36, y: 29 },
+            Point { x: 26, y: 30 },
+            Point { x: 31, y: 30 },
+            Point { x: 33, y: 30 },
+            Point { x: 38, y: 30 },
+            Point { x: 26, y: 31 },
+            Point { x: 31, y: 31 },
+            Point { x: 33, y: 31 },
+            Point { x: 38, y: 31 },
+            Point { x: 26, y: 32 },
+            Point { x: 31, y: 32 },
+            Point { x: 33, y: 32 },
+            Point { x: 38, y: 32 },
+            Point { x: 28, y: 34 },
+            Point { x: 29, y: 34 },
+            Point { x: 30, y: 34 },
+            Point { x: 34, y: 34 },
+            Point { x: 35, y: 34 },
+            Point { x: 36, y: 34 },
+        ],
+    };
+
+    serde_json::to_string(&vec![glider, pulsar])
 }
