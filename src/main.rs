@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use std::{thread, time};
 
-const COLUMNS_SIZE: usize = 50;
-const LINES_SIZE: usize = 50;
+const COLUMNS_SIZE: usize = 100;
+const LINES_SIZE: usize = 70;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Point {
@@ -52,6 +52,7 @@ impl World {
 
     fn get_amount_of_neighbours(self: &Self, column: usize, line: usize) -> u8 {
         let mut neighbours_counter = 0;
+
         if line != 0 {
             if column != 0 && self.get_cel_value(column - 1, line - 1) {
                 neighbours_counter += 1;
@@ -122,10 +123,11 @@ fn main() {
     let mut world: World = World::new();
 
     let mut generation: u32 = 1;
-    let spaceships_json: Vec<Spaceship> =
-        serde_json::from_str(&spaceship_serializator().unwrap()[..]).unwrap();
 
-    for spaceship in spaceships_json.iter() {
+    let spaceships_json = spaceship_serializator().unwrap();
+    let spaceships: Vec<Spaceship> = serde_json::from_str(&spaceships_json[..]).unwrap();
+
+    for spaceship in spaceships.iter() {
         world.build_something(spaceship);
     }
 
@@ -137,7 +139,7 @@ fn main() {
         print!("{}", world.display());
 
         generation += 1;
-        thread::sleep(time::Duration::from_millis(200));
+        thread::sleep(time::Duration::from_millis(50));
     }
 }
 
@@ -145,67 +147,87 @@ fn spaceship_serializator() -> Result<String, serde_json::Error> {
     let glider: Spaceship = Spaceship {
         name: String::from("Glider"),
         points: vec![
-            Point { x: 25, y: 13 },
-            Point { x: 26, y: 14 },
-            Point { x: 24, y: 15 },
-            Point { x: 25, y: 15 },
-            Point { x: 26, y: 15 },
+            Point { x: 25, y: 10 },
+            Point { x: 26, y: 11 },
+            Point { x: 24, y: 12 },
+            Point { x: 25, y: 12 },
+            Point { x: 26, y: 12 },
         ],
     };
 
     let pulsar: Spaceship = Spaceship {
         name: String::from("Pulsar"),
         points: vec![
-            Point { x: 28, y: 22 },
-            Point { x: 29, y: 22 },
-            Point { x: 30, y: 22 },
-            Point { x: 34, y: 22 },
-            Point { x: 35, y: 22 },
-            Point { x: 36, y: 22 },
-            Point { x: 26, y: 24 },
-            Point { x: 31, y: 24 },
-            Point { x: 33, y: 24 },
-            Point { x: 38, y: 24 },
-            Point { x: 26, y: 25 },
-            Point { x: 31, y: 25 },
-            Point { x: 33, y: 25 },
-            Point { x: 38, y: 25 },
-            Point { x: 26, y: 26 },
-            Point { x: 31, y: 26 },
-            Point { x: 33, y: 26 },
-            Point { x: 38, y: 26 },
-            Point { x: 28, y: 27 },
-            Point { x: 29, y: 27 },
-            Point { x: 30, y: 27 },
-            Point { x: 34, y: 27 },
-            Point { x: 35, y: 27 },
-            Point { x: 36, y: 27 },
-            Point { x: 28, y: 29 },
-            Point { x: 29, y: 29 },
-            Point { x: 30, y: 29 },
-            Point { x: 34, y: 29 },
-            Point { x: 35, y: 29 },
-            Point { x: 36, y: 29 },
-            Point { x: 26, y: 30 },
-            Point { x: 31, y: 30 },
-            Point { x: 33, y: 30 },
-            Point { x: 38, y: 30 },
-            Point { x: 26, y: 31 },
-            Point { x: 31, y: 31 },
-            Point { x: 33, y: 31 },
-            Point { x: 38, y: 31 },
-            Point { x: 26, y: 32 },
-            Point { x: 31, y: 32 },
-            Point { x: 33, y: 32 },
-            Point { x: 38, y: 32 },
-            Point { x: 28, y: 34 },
-            Point { x: 29, y: 34 },
-            Point { x: 30, y: 34 },
-            Point { x: 34, y: 34 },
-            Point { x: 35, y: 34 },
-            Point { x: 36, y: 34 },
+            Point { x: 38, y: 22 },
+            Point { x: 39, y: 22 },
+            Point { x: 40, y: 22 },
+            Point { x: 44, y: 22 },
+            Point { x: 45, y: 22 },
+            Point { x: 46, y: 22 },
+            Point { x: 36, y: 24 },
+            Point { x: 41, y: 24 },
+            Point { x: 43, y: 24 },
+            Point { x: 48, y: 24 },
+            Point { x: 36, y: 25 },
+            Point { x: 41, y: 25 },
+            Point { x: 43, y: 25 },
+            Point { x: 48, y: 25 },
+            Point { x: 36, y: 26 },
+            Point { x: 41, y: 26 },
+            Point { x: 43, y: 26 },
+            Point { x: 48, y: 26 },
+            Point { x: 38, y: 27 },
+            Point { x: 39, y: 27 },
+            Point { x: 40, y: 27 },
+            Point { x: 44, y: 27 },
+            Point { x: 45, y: 27 },
+            Point { x: 46, y: 27 },
+            Point { x: 38, y: 29 },
+            Point { x: 39, y: 29 },
+            Point { x: 40, y: 29 },
+            Point { x: 44, y: 29 },
+            Point { x: 45, y: 29 },
+            Point { x: 46, y: 29 },
+            Point { x: 36, y: 30 },
+            Point { x: 41, y: 30 },
+            Point { x: 43, y: 30 },
+            Point { x: 48, y: 30 },
+            Point { x: 36, y: 31 },
+            Point { x: 41, y: 31 },
+            Point { x: 43, y: 31 },
+            Point { x: 48, y: 31 },
+            Point { x: 36, y: 32 },
+            Point { x: 41, y: 32 },
+            Point { x: 43, y: 32 },
+            Point { x: 48, y: 32 },
+            Point { x: 38, y: 34 },
+            Point { x: 39, y: 34 },
+            Point { x: 40, y: 34 },
+            Point { x: 44, y: 34 },
+            Point { x: 45, y: 34 },
+            Point { x: 46, y: 34 },
         ],
     };
 
-    serde_json::to_string(&vec![glider, pulsar])
+    let pentadecathlon: Spaceship = Spaceship {
+        name: String::from("Pentadecathlon"),
+        points: vec![
+            Point { x: 21, y: 42 },
+            Point { x: 22, y: 42 },
+            Point { x: 23, y: 41 },
+            Point { x: 23, y: 43 },
+            Point { x: 24, y: 42 },
+            Point { x: 25, y: 42 },
+            Point { x: 26, y: 42 },
+            Point { x: 27, y: 42 },
+            Point { x: 28, y: 41 },
+            Point { x: 28, y: 43 },
+            Point { x: 29, y: 42 },
+            Point { x: 30, y: 42 },
+        ],
+    };
+
+    let spaceships_json: Result<String, serde_json::Error> =
+        serde_json::to_string(&vec![glider, pulsar, pentadecathlon]);
+    spaceships_json
 }
